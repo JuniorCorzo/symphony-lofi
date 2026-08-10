@@ -1,0 +1,13 @@
+# Binaries
+symphony-lofi
+/bin/
+
+# Local databases and logs
+*.db
+*.log
+.etag
+
+# IDE and OS files
+.DS_Store
+.idea/
+.vscode/
