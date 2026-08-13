@@ -1,5 +1,7 @@
 # Binaries
-symphony-lofi*
+/symphony-lofi
+/symphony-lofi.exe
+/symphony-lofi-*
 /bin/
 
 # Local databases and logs
