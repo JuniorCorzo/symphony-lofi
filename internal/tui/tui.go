@@ -1,4 +1,4 @@
-// Package tui
+// Package tui implements the terminal user interface using Bubbletea and Lipgloss.
 package tui
 
 import (
@@ -52,6 +52,7 @@ type model struct {
 	songService *services.SongService
 }
 
+// InitialModel constructs the initial Bubbletea model with injected services and player state.
 func InitialModel(
 	songService *services.SongService,
 	state *mpv.PlayerState,

@@ -1,24 +1,18 @@
+// Package db handles SQLite database connections, migrations, and song repositories.
 package db
 
 import (
 	"database/sql"
 	"log/slog"
-	"os"
-	"path/filepath"
 
+	"github.com/JuniorCorzo/symphony-lofi/internal/config"
 	_ "modernc.org/sqlite"
 )
 
+// InitDB initializes and opens the SQLite database at ~/.config/symphony-lofi/songs.db.
+// It automatically executes schema migrations if the songs table does not exist.
 func InitDB() *sql.DB {
-	configDir, err := os.UserConfigDir()
-	if err != nil {
-		configDir = os.TempDir()
-	}
-
-	appDir := filepath.Join(configDir, "symphony-lofi")
-	_ = os.MkdirAll(appDir, 0o755)
-
-	dbPath := filepath.Join(appDir, "songs.db")
+	dbPath := config.GetFilePath("songs.db")
 
 	db, err := sql.Open("sqlite", dbPath)
 	if err != nil {
@@ -45,16 +39,4 @@ func createTablesIfNotExists(db *sql.DB) {
 		return
 	}
 	slog.Debug("Ensured songs table migration complete")
-
-	// Seed default lofi streams if empty
-	seedQuery := `INSERT OR IGNORE INTO songs (url, category) VALUES
-		('https://music.youtube.com/watch?v=nSXGgI5W3LU', 'lofi'),
-		('https://music.youtube.com/watch?v=jfKfPfyJRdk', 'lofi'),
-		('https://music.youtube.com/watch?v=5qap5aO4i9A', 'lofi');`
-
-	if _, err := db.Exec(seedQuery); err != nil {
-		slog.Error("Failed to seed default songs", "error", err)
-	} else {
-		slog.Info("Default Lofi playlist seeded")
-	}
 }
