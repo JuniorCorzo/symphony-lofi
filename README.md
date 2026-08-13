@@ -48,23 +48,64 @@ A lightweight, terminal-based Lofi music player written in **Go**, powered by **
 
 ## 🚀 Installation & Usage
 
-### Prerequisites
+### 🐧 Linux
 
-Ensure you have `mpv` C development libraries installed:
+#### 1. Install Prerequisites (`libmpv` & C Compiler)
 
-- **Fedora**: `sudo dnf install mpv-devel gcc`
-- **Ubuntu / Debian**: `sudo apt install libmpv-dev gcc`
-- **Arch Linux**: `sudo pacman -S mpv gcc`
+- **Fedora / RHEL**:
+  ```bash
+  sudo dnf install mpv-devel gcc
+  ```
+- **Ubuntu / Debian / Pop!_OS**:
+  ```bash
+  sudo apt update && sudo apt install libmpv-dev gcc
+  ```
+- **Arch Linux / Manjaro**:
+  ```bash
+  sudo pacman -S mpv gcc
+  ```
 
-### Run Locally
+#### 2. Build & Install to PATH
 
 ```bash
-# Clone repository
+# Clone the repository
 git clone https://github.com/JuniorCorzo/symphony-lofi.git
 cd symphony-lofi
 
-# Run application
-go run ./cmd/symphony-lofi/
+# Compile and install to your local user bin (~/.local/bin)
+go build -ldflags="-s -w" -o ~/.local/bin/symphony-lofi ./cmd/symphony-lofi
+
+# Run anywhere
+symphony-lofi
+```
+
+---
+
+### 🪟 Windows
+
+Because `symphony-lofi` interfaces with `libmpv` through CGO, you need a C compiler (`gcc`) and `mpv` header/dll libraries provided via **MSYS2**.
+
+#### 1. Install Prerequisites via MSYS2
+
+1. Download and install [MSYS2](https://www.msys2.org/).
+2. Open the **MSYS2 MINGW64** shell and run:
+   ```bash
+   pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-pkg-config mingw-w64-x86_64-mpv
+   ```
+3. Add `C:\msys64\mingw64\bin` to your Windows `PATH` environment variable so Go can locate `gcc` and `mpv-2.dll`.
+
+#### 2. Build & Run (PowerShell or CMD)
+
+```powershell
+# Clone the repository
+git clone https://github.com/JuniorCorzo/symphony-lofi.git
+cd symphony-lofi
+
+# Compile executable
+go build -ldflags="-s -w" -o symphony-lofi.exe ./cmd/symphony-lofi
+
+# Run player
+.\symphony-lofi.exe
 ```
 
 ---
