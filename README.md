@@ -81,20 +81,26 @@ symphony-lofi
 
 ---
 
-### 🪟 Windows
+### 🪟 Windows (PowerShell & winget)
 
-Because `symphony-lofi` interfaces with `libmpv` through CGO, you need a C compiler (`gcc`) and `mpv` header/dll libraries provided via **MSYS2**.
+Because `symphony-lofi` interfaces with `libmpv` through CGO, you need `gcc` and `libmpv` dev headers. You can install everything directly from **PowerShell** using **`winget`**:
 
-#### 1. Install Prerequisites via MSYS2
+#### 1. Install Prerequisites via `winget` (in PowerShell)
 
-1. Download and install [MSYS2](https://www.msys2.org/).
-2. Open the **MSYS2 MINGW64** shell and run:
-   ```bash
-   pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-pkg-config mingw-w64-x86_64-mpv
-   ```
-3. Add `C:\msys64\mingw64\bin` to your Windows `PATH` environment variable so Go can locate `gcc` and `mpv-2.dll`.
+```powershell
+# 1. Install Go and MSYS2 toolchain
+winget install GoLang.Go
+winget install MSYS2.MSYS2
 
-#### 2. Build & Run (PowerShell or CMD)
+# 2. Install gcc and libmpv headers via MSYS2 pacman
+C:\msys64\usr\bin\pacman.exe -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-pkg-config mingw-w64-x86_64-mpv
+
+# 3. Add MinGW toolchain to your user PATH
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\msys64\mingw64\bin", "User")
+$env:Path += ";C:\msys64\mingw64\bin"
+```
+
+#### 2. Build & Run (PowerShell)
 
 ```powershell
 # Clone the repository
